@@ -1,6 +1,3 @@
-# <a href="url"><img src="https://cdn3.iconfinder.com/data/icons/egg/500/Egg_food_cracked_whipped-512.png" align="middle" width="100" height="100"></a> simple_shell
-
-
 ## Table of Contents
 * [Description](#description)
 * [File Structure](#file-structure)
@@ -68,7 +65,7 @@ simple_shell is designed to run in the `Ubuntu 14.04 LTS` linux environment and 
 
 ## Installation
 
-   - Clone this repository: `git clone "https://github.com/alexaorrico/simple_shell.git"`
+   - Clone this repository: `git clone "https://github.com/bmborne/simple_shell.git"`
    - Change directories into the repository: `cd simple_shell`
    - Compile: `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`
    - Run the shell in interactive mode: `./hsh`
@@ -133,9 +130,8 @@ drwxrwxr-x  8 vagrant vagrant  4096 Jul 19 22:34 .git
 At this time, there are no known bugs.
 
 ## Authors
-Alexa Orrico | [GitHub](https://github.com/alexaorrico) | [Twitter](https://twitter.com/alexa_orrico)
-
-John Cottrell | [GitHub](https://github.com/johncottrell) | [Twitter](https://twitter.com/johnpeterco)
+Boniphace Mkindi | [GitHub](https://github.com/bmborne) | [Twitter](https://twitter.com/BoniphaceMkindi)
+William Chipungu | [GitHub](https://github.com/prophet852) | [Twitter](https://twitter.com/)
 
 ## License
 simple_shell is open source and therefore free to download and use without permission.
