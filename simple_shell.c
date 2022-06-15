@@ -10,12 +10,19 @@ unsigned int sig_flag;
  * Return: void
  */
 static void sig_handler(int uuv)
-{
+/*{
 	(void) uuv;
 	if (sig_flag == 0)
 		_puts("\n$ ");
 	else
 		_puts("\n");
+}*/
+{
+	(void) uuv;
+	if (sig_flag != 0)
+		_puts("\n$");
+	_puts("\n");
+	exit(1);
 }
 
 /**
