@@ -1,183 +1,140 @@
-# Simple Shell
+## Table of Contents
+* [Description](#description)
+* [File Structure](#file-structure)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Example of Use](#example-of-use)
+* [Bugs](#bugs)
+* [Authors](#authors)
+* [License](#license)
 
-### Introduction
-This repository is a [Holberton School](https://www.holbertonschool.com/) Project. The school project consisted in writing a shell like sh (Bourne Shell) by Stephen Bourne  , in **C**, using a limited number of standard library functions, So Instead we used ower own function that we rewrited over the past three month [Here](https://github.com/Theemiss/holbertonschool-low_level_programming/)
+## Description
+simple_shell is a command line interpreter, or shell, in the tradition of the first Unix shell written by Ken Thompson in 1971. This shell is intentionally minimalistic, yet includes the basic functionality of a traditional Unix-like command line user interface.
+Standard functions and system calls employed in simple_shell include:
+   `access, execve, exit, fork, free, fstat, getline, malloc, perror, signal, stat, wait, write.`
 
-The goal in this project was to make us understand how a shell works. To single out some items: what is the *environment*, the difference between *functions* and *system calls*, how to create *processes* using `execve`...  
+## File Structure
+* [AUTHORS](AUTHORS) - List of contributors to this repository
+* [man_1_simple_shell](man_1_simple_shell) - Manual page for the simple_shell
+* [shell.h](shell.h) - program header file
+* [builtins.c](builtins.c) - major builtin functions
+  * `check_for_builtins` - checks to see if the user's command matches a builtin
+  * `new_exit` - exits the shell with the option of a specified status
+  * `_env` - prints the shell's environment variables to the standard output
+  * `new_setenv` - initializes a new environment variable, or modifies an existing one
+  * `new_unsetenv` - removes an environment variable
+* [builtins2.c](builtins2.c) - helper functions for the builtins
+  * `add_key` - creates a new environment variable
+  * `find_key` - finds an environment variable in the environment array
+  * `add_value` - creates a new environment variable string
+  * `_atoi` - converts a string into a non-negative integer
+* [environment.c](environment.c) - functions related to the environment
+  * `make_env` - creates the shell's environment from the parent process
+  * `free_env` - frees the shell's environment
+* [errors.c](errors.c) - functions related to printing errors
+  * `print_error` - prints an error message to the standard error
+  * `_puts2` - prints a string to the standard error
+  * `_uitoa` - converts an unsigned integer to a string
+* [memory_allocation.c](memory_allocation.c) - memory allocation functions
+  * `_realloc` - a custom realloc function for arrays of pointers
+* [new_strtok.c](new_strtok.c) - custom strtok and helper functions
+  * `check_match` - checks if a character matches any in a string
+  * `new_strtok` - a custom strtok for the shell
+* [path.c](path.c) - functions related to executing commands
+  * `path_execute` - executes a command in the PATH
+  * `find_path` - finds the PATH environment variable
+  * `check_for_path` - checks if the command is in the PATH
+  * `execute_cwd` - executes a command with an absolute path
+  * `check_for_dir` - checks if the command contains an absolute path
+* [simple_shell.c](simple_shell.c) - essential functions to the shell
+  * `main` - the main function of the program
+  * `sig_handler` - handles SIGINT
+* [strfunc.c](strfunc.c) - functions related to string manipulation
+  * `_puts` - writes a string to standart output
+  * `_strdup` - duplicates a string
+  * `_strcmpr` - compares two strings
+  * `_strcat` - concatenates two strings with a `/` in the middle
+  * `_strlen` - calculates the length of a string
+* [tokenize.c](tokenize.c) - tokenizing function
+  * `tokenize` - creates an array of tokens from a buffer with a specified delimiter
 
-## Usage 
-In order to run this program, 
+## Requirements
 
-Clone This Repo
+simple_shell is designed to run in the `20.04.4 LTS (Focal Fossa)` linux environment and to be compiled using the GNU compiler collection v. `gcc 9.4.0 ` with flags`-Wall, -Werror, -Wextra, and -pedantic.`
 
-`` git clone https://github.com/Theemiss/simple_shell ``
+## Installation
 
-compile it with  
+   - Clone this repository: `git clone "https://github.com/bmborne/simple_shell.git"`
+   - Change directories into the repository: `cd simple_shell`
+   - Compile: `gcc -Wall -Werror -Wextra -pedantic *.c -o hsh`
+   - Run the shell in interactive mode: `./hsh`
+   - Or run the shell in non-interactive mode: example `echo "pwd" | ./hsh`
 
-`gcc 4.8.4 -Wall -Werror -Wextra -pedantic *.c -o hsh`.  
-You can then run it by invoking `./hsh` in that same directory.  
+## Usage
 
-### How to use it
-In order to use this shell, in a terminal, first run the program:    
-`prompt$ ./hsh`  
-It wil then display a simple prompt and wait for commands.  
-`$ `   
-A command will be of the type `$ command`  
-This shell can handle two types of commands: builtins and normal program.
-##### List of built-ins
-Currently the list of built-ins I wrote is:  
-* cd [directory]  
-Switch to the specified directory (path).
-* env  
-Displays the environment variable
-* exit [exitstatus]  
-Exit from the program with exitstatus value. 0 by default.
-* getenv NAME  
-Return the value of the NAME variable if it is in the environment
-* help [command]  
-Displays the syntax for the command, or all commands.  
-* history  
-Displays the last typed user .
-* echo [$$] or [$?] or [$PATH]
-Return pid and exit statue and PATH.
-##### Command
-Basicly Every Program in `$PATH`
-It Support Single Word like `ls` 
+The simple_shell is designed to execute commands in a similar manner to sh, however with more limited functionality. The development of this shell is ongoing. The below features will be checked as they become available (see man page for complete information on usage):
 
-It Handle Path `ls /tmp`
+### Features
+- [x] uses the PATH
+- [x] implements builtins
+- [x] handles command line arguments
+- [x] custom strtok function
+- [x] uses exit status
+- [x] shell continues upon Crtl+C (**^C**)
+- [x] handles comments (#)
+- [x] handles **;**
+- [ ] custom getline type function
+- [ ] handles **&&** and **||**
+- [ ] aliases
+- [ ] variable replacement
 
-it Handle Options Like `ls -l`
 
-it Handle All Three Togther Like `ls -l /var `
+### Builtins
 
-it Handle Command Path Also Like `/bin/ls` And All The Option And Path Like `/bin/ls -l /var`
+- [x] exit
+- [x] env
+- [x] setenv
+- [x] unsetenv
+- [ ] cd
+- [ ] help
+- [ ] history
 
-it Handle Comments **#** 
-## Examples Command
-**Example 1**
+## Example of Use
+Run the executable in your terminal after compiling:
 ```
-Username@your-regular-prompt:~$ ./hsh
-$ pwd
-/home/username/
-$ ^D
-Username@your-regular-prompt:~$
-```
-**Example 2**
-```
-Username@your-regular-prompt:~$ ./hsh
-$ ls -l /tmp 
--rw------- 1 username username    0 Dec  5 12:09 config-err-aAMZrR
-drwx------ 3 root   root   4096 Dec  5 12:09 systemd-private-062a0eca7f2a44349733e78cb4abdff4-colord.service-V7DUzr
-drwx------ 3 root   root   4096 Dec  5 12:09 systemd-private-062a0eca7f2a44349733e78cb4abdff4-rtkit-daemon.service-ANGvoV
-drwx------ 3 root   root   4096 Dec  5 12:07 systemd-private-062a0eca7f2a44349733e78cb4abdff4-systemd-timesyncd.service-CdXUtH
--rw-rw-r-- 1 username username    0 Dec  5 12:09 unity_support_test.0
-$ ^D
-Username@your-regular-prompt:~$
-```
-### Exmples Builtin
-
-**case env and exit**
-```
-Username@your-regular-prompt:~$ ./hsh
-USER=julien
-LANGUAGE=en_US
-SESSION=ubuntu
-COMPIZ_CONFIG_PROFILE=ubuntu
-SHLVL=1
-HOME=/home/julien
-C_IS=Fun_:)
-DESKTOP_SESSION=ubuntu
-LOGNAME=julien
-TERM=xterm-256color
-PATH=/home/julien/bin:/home/julien/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-DISPLAY=:0
-$ exit
-Username@your-regular-prompt:~$ 
+root@44351281a413:/simple_shell# ./hsh
+$ ls -alrth
+total 96K
+drwxr-xr-x 1 root root  147 Jun 13 13:50 ..
+-rw------- 1 root root  148 Jun 14 09:36 .simple_shell_history
+drwxr-xr-x 8 root root  220 Jun 14 09:41 .git
+-rwxr--r-- 1 root root 1.3K Jun 14 09:50 new_strtok.c
+-rwxr--r-- 1 root root 3.4K Jun 14 09:50 path.c
+-rwxr--r-- 1 root root 1.8K Jun 14 09:50 shell.h
+-rwxr--r-- 1 root root 1.5K Jun 14 09:50 simple_shell.c
+-rwxr--r-- 1 root root  484 Jun 14 09:50 memory_allocation.c
+-rw-r--r-- 1 root root 2.3K Jun 14 09:50 man_1_simple_shell
+-rwxr--r-- 1 root root 1.2K Jun 14 09:50 errors.c
+-rwxr--r-- 1 root root  710 Jun 14 09:50 environment.c
+-rwxr--r-- 1 root root 2.1K Jun 14 09:50 strfunc.c
+-rwxr--r-- 1 root root  719 Jun 14 09:50 tokenize.c
+-rwxr--r-- 1 root root 2.8K Jun 14 09:50 builtins.c
+-rw-r--r-- 1 root root 6.3K Jun 14 09:51 README.md
+-rw-r--r-- 1 root root  110 Jun 14 09:52 AUTHORS
+-rwxr--r-- 1 root root 2.4K Jun 14 10:00 builtins2.c
+drwxr-xr-x 3 root root 4.0K Jun 14 10:07 .
+-rwxr-xr-x 1 root root  27K Jun 14 10:07 hsh
 
 ```
-**Case Exit Statue**
-```
-Username@your-regular-prompt:~$ ./hsh
-$ exit 98
-Username@your-regular-prompt:~$ echo $?
-98
-Username@your-regular-prompt:~$
+## Bugs
+At this time, there are no known bugs.
 
-```
-Keep Exploring The echo Builtin and history ... Using The Help Builtin
-
-### Also
-* Handle Ctrl+C: your shell should not quit when the user inputs ^C
-* If no argument is given to cd the command must be interpreted like cd $HOME
-* handle the command cd -
-* Handle variables replacement
-* Handle the $? variable
-* Handle the $$ variable
-* Handle The Argument file like `./hsh test` Where test is a file filled with command and builtin to excute.
-### List of functions and system calls we could use
-List of allowed functions and system calls
-
-    access (man 2 access)
-    chdir (man 2 chdir)
-    close (man 2 close)
-    closedir (man 3 closedir)
-    execve (man 2 execve)
-    exit (man 3 exit)
-    fork (man 2 fork)
-    free (man 3 free)
-    fstat (man 2 fstat)
-    getcwd (man 3 getcwd)
-    getline (man 3 getline)
-    kill (man 2 kill)
-    lstat (man 2 lstat)
-    malloc (man 3 malloc)
-    open (man 2 open)
-    opendir (man 3 opendir)
-    perror (man 3 perror)
-    read (man 2 read)
-    readdir (man 3 readdir)
-    signal (man 2 signal)
-    stat (man 2 stat)
-    strtok (man 3 strtok)
-    wait (man 2 wait)
-    waitpid (man 2 waitpid)
-    wait3 (man 2 wait3)
-    wait4 (man 2 wait4)
-    write (man 2 write)
-    _exit (man 2 _exit)
-### Custom Function (Recreation of Standard Function in C)
- * _strncpy
- * _strlen
- * _putchar
- * _atoi
- * _puts
- * _strcmp
- * _isalpha
- * array_rev
- * intlen
- * _itoa
- * _strcat
- * _strcpy
- * _strchr
- * _strncmp
- * _strdup
- * _memcpy
- * _calloc
- * _realloc
- * _getenv
- * _getline
- * _strtok
-
-For More Info About It Check The Man Page by
-```
-Username@your-regular-prompt:~$ man ./man_1_simple_shell
-```
-Project Done in 15 Day
-
-Read More [Here](https://midinfotn401.medium.com/shell-step-by-step-what-happen-when-you-type-ls-l-in-the-shell-83d655712332)
 ## Authors
-* Ahmed Belhaj [Theemiss](https://github.com/Theemiss)
+Boniphace Mkindi | [GitHub](https://github.com/bmborne)
 
-<p align="center">
-  <img src="http://www.holbertonschool.com/holberton-logo.png" alt="Holberton School logo">
-</p>
+
+William Chipungu | [GitHub](https://github.com/prophet852)
+
+## License
+simple_shell is open source and therefore free to download and use without permission.
